@@ -6,9 +6,24 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/*
+ * Spatie
+ */
+use Spatie\Permission\Traits\HasRoles;
+
 class User extends Authenticatable
 {
     use Notifiable;
+
+    // Spatie Laravel permission
+    /*
+     * If we doesn't add this package, you won't be able to use Spatie like (
+     * ->permission, ->getAllPermissions(), ->getDirectPermissions(), ->getPermissionsViaRoles(),
+     * etc... )
+     **/
+    use HasRoles;
+
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -36,4 +51,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /*
+     * Mutator to auto encrypt password
+     */
+    public function setPasswordAttribute($password){
+        $this->attributes['password'] = bcrypt($password);
+    }
 }

@@ -65,6 +65,16 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
+
+            {{--Logout button--}}
+            @if(Auth::check())
+                @if(auth()->user()->can('edit articles'))
+                    {{ auth()->user()->permissions}}
+                @endif
+                <a href="{{ route('user.logout', auth()->user()->id) }}">Logout</a>
+                @endif
+            {{--End Logout Button--}}
+
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
@@ -81,12 +91,17 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    {{--::check() use for control user login or not--}}
+                    @if(Auth::check())
+                        {{ auth()->user()->name }}
+                    @else
+                        <a href="{{ route('user.log') }}">Login</a>
+                    @endif
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
+                    <a href="https://laravel.com/docs">Permission =></a>
+                    <a href="https://laracasts.com">Defence</a>
                     <a href="https://laravel-news.com">News</a>
                     <a href="https://blog.laravel.com">Blog</a>
                     <a href="https://nova.laravel.com">Nova</a>
